@@ -8,7 +8,7 @@ Agent内存马的工作原理是利用Java Instrument API 动态修改 正在JVM
 
 过去，这项技术需要文件落地才可使用，好在 [**rebeyond**](https://xz.aliyun.com/u/8697) [**游望之**](https://xz.aliyun.com/u/40732) 提出了无文件落地利用方式，使得通过反序列化漏洞/JNDI注入来一步打入Agent内存马有了可能
 
-本工具对于前人给出的EXP进行了小幅修改，可以根据**不同目标环境和应用场景**，简单快速地生成用于注入Agent内存马的classFile；
+本工具对于前人给出的EXP进行了小幅修改，可以根据**不同目标环境和应用场景**，简单快速地生成用于注入Agent内存马的classFile
 
 ## #2 原理
 
@@ -37,6 +37,10 @@ Linux下内存马进阶植入技术 https://xz.aliyun.com/t/10186
 也可以在release中直接下载jar包
 
 ### 运行
+
+**首先请确保** jar文件的同目录下有`MemShellSrc`和`out`两个文件夹，**前者可以在仓库中找到**
+
+**请使用 Java8 运行** 
 
 `java -jar FilelessAgentMemShell.jar`
 
@@ -74,7 +78,9 @@ Linux下内存马进阶植入技术 https://xz.aliyun.com/t/10186
 
 此外，动态替换字节码意味着你可以做到任何事，对抗检测、循环复活......
 
-#### 命令行参数
+#### 利用工具生成用于注入Agent内存马的类
+
+**以下是命令行参数**
 
 - -c className;eg:``org.apache.catalina.core.StandardContextValve`` (宿主类的**全限定类名**)
 - -p Path; eg:`/path/test.class` （新类字节码路径）
@@ -83,7 +89,7 @@ Linux下内存马进阶植入技术 https://xz.aliyun.com/t/10186
 - -i  ifbeyondJDK8; eg:`true/false`（目标JDK版本是否大于8，仅目标为Windows时需要填写）
 - -b  eg: `32/64` (目标操作系统位数，仅对于Windows目标可指定)
 
-例如，在使用本项目提供的漏洞环境与测试用新类进行模拟测试时，你应该指定如下参数
+例如，在使用本项目提供的漏洞环境与**测试用新类**进行模拟测试时，你应该指定如下参数
 
 `java -jar .\FilelessAgentMemshellGenerator.jar` 
 
@@ -101,7 +107,7 @@ Linux下内存马进阶植入技术 https://xz.aliyun.com/t/10186
 
 #### 提示
 
-- 如果帮助信息出现乱码，请使用`chcp 936` 修改字符编码后重新运行项目
+- **如果帮助信息出现乱码，请使用`chcp 936` 修改字符编码后重新运行项目**
 - 建议使用JDK低版本，以提高生成classFile的兼容性
 - -c指定的类名**必须是全限定名**
 
@@ -123,7 +129,13 @@ Linux下内存马进阶植入技术 https://xz.aliyun.com/t/10186
 
 使用中如遇乱码，可使用chcp 936切换字符编码
 
-### 目标操作系统限制
+### 目标环境限制
+
+#### JDK
+
+**`JDK8 ~ JDK11`**
+
+#### OS
 
 **暂未测试** `Windows 32bit`
 
@@ -131,14 +143,14 @@ Linux下内存马进阶植入技术 https://xz.aliyun.com/t/10186
 
 ## #5 开发进度&更新计划
 
+- [x] 测试所有可用的JDK版本
+- [ ] 预置在常见宿主类中实现内存马逻辑的成品类
 - [ ] 提供自动化缩短payload长度的逻辑；提供分割最终字节码的逻辑，以适配分块传输
-- [ ] 预置在常见宿主类中实现内存马逻辑的成品类文件
 - [ ] 实现msf、ysomap等工具的cli交互模式；提供英文版ReadMe；开发图形化
 - [ ] 联动其它攻击工具，更方便地一次打入Agent内存马
-- [ ] 实现 [**cincly**](https://xz.aliyun.com/u/14775) 师傅提到的“借尸还魂”技术
-- [ ] **提供随机类名，规避类的重复加载**问题
+- [ ] 实现 [**cincly**](https://xz.aliyun.com/u/14775) 师傅提出的“借尸还魂”技术
+- [ ] 提供随机类名，规避类的重复加载问题
 - [ ] 解决loadLibrary引起的一次攻击失败后续就不能再攻击问题
-- [ ] 测试所有可用的JDK版本
 
 ## #6 背景
 
