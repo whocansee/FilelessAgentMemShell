@@ -62,7 +62,7 @@ Linux下内存马进阶植入技术 https://xz.aliyun.com/t/10186
 - org.springframework.web.servlet.DispatcherServlet（不推荐，代码多）
 - javax.servlet.http.HttpServlet #service()（Tomcat9之后/Weblogic环境下，包前缀是`jakarta`/`weblogic`）(不推荐，代码多)
 
-#### 编写替换类
+#### 编写、编译替换类
 
 你可以使用Javassist工具方便的生成新字节码，一般来说可以使用insertBefore在目标方法前添加shell逻辑，以在不影响正常逻辑的前提下实现内存马
 
@@ -72,11 +72,11 @@ Linux下内存马进阶植入技术 https://xz.aliyun.com/t/10186
 
 **Javassist**   https://www.cnblogs.com/rickiyang/p/11336268.html
 
-至于**ASM**框架，从未接触过到完全掌握需要较大时间成本，在本项目中其使用场景较为单一，所以也可以直接套用我在........中给出的示例代码
+至于**ASM**框架，从未接触过到完全掌握需要较大时间成本，在本项目中其使用场景较为单一，所以也可以直接套用我在**[使用指南](https://xz.aliyun.com/t/13150#toc-7)**中给出的示例代码
 
-如果你完全不想接触这部分工具，也可以直接使用仓库中给出的**测试用**新类；未来或许会给出**实战可用**的针对常见类的新字节码，详见**更新计划**
+如果你完全不想接触这部分工具，也可以直接使用我给出的测试类[WsFilter.class](https://github.com/whocansee/FilelessAgentMemShell/blob/main/testEnvironment/WsFilter.class)；未来或许会给出**实战可用**的针对常见类的新字节码，详见**更新计划**
 
-此外，动态替换字节码意味着你可以做到任何事，对抗检测、循环复活......
+测试完成之后，**建议自己编写新类**，因为动态替换字节码意味着你几乎可以做到任何事，对抗检测、循环复活、更改硬编码密钥.......
 
 #### 利用工具生成用于注入Agent内存马的类
 
